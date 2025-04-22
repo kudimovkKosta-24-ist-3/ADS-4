@@ -1,5 +1,5 @@
 // Copyright 2021 NNTU-CS
-#include <algorithm>
+
 
 int countPairs1(int *arr, int len, int value) {
   int count = 0;
@@ -14,27 +14,30 @@ int countPairs1(int *arr, int len, int value) {
 }
 
 int countPairs2(int *arr, int len, int value) {
-  std::sort(arr, arr + len);
+  int* copy = new int[len];
+  std::copy(arr, arr + len, copy);
+  std::sort(copy, copy + len);
+
   int count = 0;
   int left = 0;
   int right = len - 1;
   while (left < right) {
-    int sum = arr[left] + arr[right];
+    int sum = copy[left] + copy[right];
     if (sum == value) {
-      if (arr[left] == arr[right]) {
+      if (copy[left] == copy[right]) {
         int n = right - left + 1;
         count += n * (n - 1) / 2;
         break;
       } else {
-        int left_val = arr[left];
-        int right_val = arr[right];
+        int left_val = copy[left];
+        int right_val = copy[right];
         int left_count = 0;
         int right_count = 0;
-        while (left < len && arr[left] == left_val) {
+        while (left < len && copy[left] == left_val) {
           left++;
           left_count++;
         }
-        while (right >= 0 && arr[right] == right_val) {
+        while (right >= 0 && copy[right] == right_val) {
           right--;
           right_count++;
         }
@@ -46,6 +49,8 @@ int countPairs2(int *arr, int len, int value) {
       right--;
     }
   }
+
+  delete[] copy;
   return count;
 }
 
@@ -80,12 +85,17 @@ int countOccurrences(int *arr, int left, int right, int value) {
 }
 
 int countPairs3(int *arr, int len, int value) {
-  std::sort(arr, arr + len);
+  int* copy = new int[len];
+  std::copy(arr, arr + len, copy);
+  std::sort(copy, copy + len);
+
   int count = 0;
   for (int i = 0; i < len; ++i) {
-    int target = value - arr[i];
-    int occurrences = countOccurrences(arr, i + 1, len - 1, target);
+    int target = value - copy[i];
+    int occurrences = countOccurrences(copy, i + 1, len - 1, target);
     count += occurrences;
   }
+
+  delete[] copy;
   return count;
 }
