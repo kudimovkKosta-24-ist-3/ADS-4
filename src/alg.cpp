@@ -62,8 +62,6 @@ int binarySearch(int *arr, int left, int right, int value) {
 
 int countOccurrences(int *arr, int left, int right, int value) {
   int first = -1, last = -1;
-  
-  // Находим первое вхождение value
   int low = left, high = right;
   while (low <= high) {
     int mid = low + (high - low) / 2;
@@ -74,8 +72,6 @@ int countOccurrences(int *arr, int left, int right, int value) {
     }
   }
   first = low;
-
-  // Находим последнее вхождение value
   low = left;
   high = right;
   while (low <= high) {
