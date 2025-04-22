@@ -1,7 +1,7 @@
 // Copyright 2021 NNTU-CS
 #include <algorithm>
 
-int countPairs1(int *arr, int len, int value) {
+int countPairs1(int* arr, int len, int value) {
   int count = 0;
   for (int i = 0; i < len; ++i) {
     for (int j = i + 1; j < len; ++j) {
@@ -13,11 +13,10 @@ int countPairs1(int *arr, int len, int value) {
   return count;
 }
 
-int countPairs2(int *arr, int len, int value) {
+int countPairs2(int* arr, int len, int value) {
   int* copy = new int[len];
   std::copy(arr, arr + len, copy);
   std::sort(copy, copy + len);
-
   int count = 0;
   int left = 0;
   int right = len - 1;
@@ -49,13 +48,11 @@ int countPairs2(int *arr, int len, int value) {
       right--;
     }
   }
-
   delete[] copy;
   return count;
 }
 
-int countOccurrences(int *arr, int left, int right, int value) {
-  int first = -1, last = -1;
+int countOccurrences(int* arr, int left, int right, int value) {
   int low = left, high = right;
   while (low <= high) {
     int mid = low + (high - low) / 2;
@@ -65,37 +62,10 @@ int countOccurrences(int *arr, int left, int right, int value) {
       low = mid + 1;
     }
   }
-  first = low;
-  low = left;
-  high = right;
+  int first = low;
+
+  low = left, high = right;
   while (low <= high) {
     int mid = low + (high - low) / 2;
     if (arr[mid] <= value) {
-      low = mid + 1;
-    } else {
-      high = mid - 1;
-    }
-  }
-  last = high;
-
-  if (first <= last && arr[first] == value && arr[last] == value) {
-    return last - first + 1;
-  }
-  return 0;
-}
-
-int countPairs3(int *arr, int len, int value) {
-  int* copy = new int[len];
-  std::copy(arr, arr + len, copy);
-  std::sort(copy, copy + len);
-
-  int count = 0;
-  for (int i = 0; i < len; ++i) {
-    int target = value - copy[i];
-    int occurrences = countOccurrences(copy, i + 1, len - 1, target);
-    count += occurrences;
-  }
-
-  delete[] copy;
-  return count;
-}
+      low = mid +
