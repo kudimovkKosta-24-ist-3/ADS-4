@@ -57,26 +57,43 @@ int binarySearch(int *arr, int left, int right, int value) {
     }
     return -1;
 }
+int countOccurrences(int *arr, int left, int right, int value) {
+    int first = -1, last = -1;
+    
+    // Находим первое вхождение value
+    int low = left, high = right;
+    while (low <= high) {
+        int mid = low + (high - low) / 2;
+        if (arr[mid] >= value) {
+            high = mid - 1;
+        } else {
+            low = mid + 1;
+        }
+    }
+    first = low;
+    low = left, high = right;
+    while (low <= high) {
+        int mid = low + (high - low) / 2;
+        if (arr[mid] <= value) {
+            low = mid + 1;
+        } else {
+            high = mid - 1;
+        }
+    }
+    last = high;
+
+    if (first <= last && arr[first] == value && arr[last] == value) {
+        return last - first + 1;
+    }
+    return 0;
+}
 int countPairs3(int *arr, int len, int value) {
-  int count = 0;
+    int count = 0;
     for (int i = 0; i < len; ++i) {
         int target = value - arr[i];
-        int idx = binarySearch(arr, i + 1, len - 1, target);
-        if (idx != -1) {
-            count++;
-            // Проверяем, есть ли дубликаты справа
-            int left = idx - 1;
-            while (left > i && arr[left] == target) {
-                count++;
-                left--;
-            }
-            // Проверяем, есть ли дубликаты слева
-            int right = idx + 1;
-            while (right < len && arr[right] == target) {
-                count++;
-                right++;
-            }
-        }
+        // Ищем target только в правой части (i+1, len-1)
+        int occurrences = countOccurrences(arr, i + 1, len - 1, target);
+        count += occurrences;
     }
     return count;
 }
