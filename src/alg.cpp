@@ -17,9 +17,11 @@ int countPairs2(int* arr, int len, int value) {
   int* copy = new int[len];
   std::copy(arr, arr + len, copy);
   std::sort(copy, copy + len);
+
   int count = 0;
   int left = 0;
   int right = len - 1;
+
   while (left < right) {
     int sum = copy[left] + copy[right];
     if (sum == value) {
@@ -48,6 +50,7 @@ int countPairs2(int* arr, int len, int value) {
       right--;
     }
   }
+
   delete[] copy;
   return count;
 }
@@ -68,4 +71,31 @@ int countOccurrences(int* arr, int left, int right, int value) {
   while (low <= high) {
     int mid = low + (high - low) / 2;
     if (arr[mid] <= value) {
-      low = mid +
+      low = mid + 1;
+    } else {
+      high = mid - 1;
+    }
+  }
+  int last = high;
+
+  if (first <= last && arr[first] == value && arr[last] == value) {
+    return last - first + 1;
+  }
+  return 0;
+}
+
+int countPairs3(int* arr, int len, int value) {
+  int* copy = new int[len];
+  std::copy(arr, arr + len, copy);
+  std::sort(copy, copy + len);
+
+  int count = 0;
+  for (int i = 0; i < len; ++i) {
+    int target = value - copy[i];
+    int occurrences = countOccurrences(copy, i + 1, len - 1, target);
+    count += occurrences;
+  }
+
+  delete[] copy;
+  return count;
+}
